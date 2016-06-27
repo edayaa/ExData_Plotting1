@@ -12,21 +12,19 @@ setwd("C:\\Eday\\Doc\\R\\download\\exp_analysis")
 ################  selecting data for only Feb/01/2007 7 Feb/02/2007
 
 house_pow_cons <- read.table("household_power_consumption.txt",header = TRUE , stringsAsFactors=FALSE,sep=";",na.strings = "?")
-
-house_pow_cons$DateTime <- as.POSIXct(paste(house_pow_cons$Date, house_pow_cons$Time), format="%d/%m/%Y %H:%M:%S")
-
-pow_cons_input <- filter(house_pow_cons,as.Date(DateTime)=="2007-02-01"| as.Date(DateTime)=="2007-02-02")
+pow_cons_input <- subset(house_pow_cons,house_pow_cons$Date =='1/2/2007' | house_pow_cons$Date =='2/2/2007')
+pow_cons_input$DateTime <- as.POSIXct(paste(pow_cons_input$Date, pow_cons_input$Time), format="%d/%m/%Y %H:%M:%S")
 
 
 ###############  Plot to get "Global Active Power" for 02/01/2007 & 02/02/2007 
 ###############  Copying the Plot into .png devive. 
-
+#png("plot3.png",width = 480,height = 480)
 with(pow_cons_input,plot(DateTime,Sub_metering_1,ylab ="Enery sub metering",type = "l"))
 with(pow_cons_input,points(DateTime,Sub_metering_2,col="red",type = "l"))
 with(pow_cons_input,points(DateTime,Sub_metering_3,col="blue",type = "l"))
-par(cex=.64)
-legend("topright",lwd=c(1.5,1.5),lty=1,col= c("black","red","blue"),
-       legend=c("Sub_metering_1","Sub_metering_2","Sub_metering_3"))
-dev.copy(png,file="plot3.png")
+par(cex=.42)
+legend("topright",
+       c("Sub_metering_1","Sub_metering_2","Sub_metering_3"),lwd=2.5,lty=1,col= c("black","red","blue"))
+dev.copy(png,file="plot3.png",width=480,height=480)
 dev.off()
 ############### 
